@@ -54,3 +54,10 @@ body {
   background-color: teal;
   color: white;
 }
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 8px 0;
+  text-align: center;
+}

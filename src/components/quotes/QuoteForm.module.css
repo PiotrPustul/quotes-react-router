@@ -40,6 +40,11 @@
   outline-color: teal;
 }
 
+.control .input-error {
+  background-color: #f5b0b0;
+  border: 1px solid rgb(255, 0, 0);
+}
+
 .actions {
   text-align: right;
 }

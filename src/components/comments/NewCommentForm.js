@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 import useHttp from '../../hooks/use-http';
 import { addComment } from '../../lib/api';
@@ -6,6 +6,9 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import classes from './NewCommentForm.module.css';
 
 const NewCommentForm = (props) => {
+  const [commentIsValid, setCommentIsValid] = useState();
+  const [commentError, setCommentError] = useState('');
+
   const commentTextRef = useRef();
 
   const { sendRequest, status, error } = useHttp(addComment);
@@ -21,11 +24,25 @@ const NewCommentForm = (props) => {
   const submitFormHandler = (event) => {
     event.preventDefault();
 
-    const enteredText = commentTextRef.current.value;
+    const enteredComment = commentTextRef.current.value;
 
-    sendRequest({ commentData: { text: enteredText }, quoteId: props.quoteId });
+    if (enteredComment.length < 5) {
+      setCommentError('Please write something more (min 5 charts)');
+      setCommentIsValid(false);
+    } else {
+      setCommentError('');
+      setCommentIsValid(true);
+    }
+
+    if (!commentIsValid) {
+      return;
+    }
+
+    sendRequest({ commentData: { text: enteredComment }, quoteId: props.quoteId });
     commentTextRef.current.value = '';
   };
+
+  const inputCommentClass = commentError && `${classes['input-error']}`;
 
   return (
     <form className={classes.form} onSubmit={submitFormHandler}>
@@ -36,7 +53,8 @@ const NewCommentForm = (props) => {
       )}
       <div className={classes.control} onSubmit={submitFormHandler}>
         <label htmlFor='comment'>Your Comment</label>
-        <textarea id='comment' rows='5' ref={commentTextRef}></textarea>
+        <textarea id='comment' rows='5' ref={commentTextRef} className={inputCommentClass}></textarea>
+        {commentError && <p className='error-message'>{commentError}</p>}
       </div>
       <div className={classes.actions}>
         <button className='btn'>Add Comment</button>

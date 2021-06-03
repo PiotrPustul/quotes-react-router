@@ -77,8 +77,6 @@ export const getAllComments = async (quoteId) => {
 
   const data = await response.json();
 
-  console.log(data);
-
   if (!response.ok) {
     throw new Error(data.message || 'Could not get comments.');
   }
