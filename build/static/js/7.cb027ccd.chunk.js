@@ -1,2 +1,0 @@
-(this["webpackJsonprouter-app"]=this["webpackJsonprouter-app"]||[]).push([[7],{50:function(e,t,n){"use strict";n.r(t);var r=n(1);t.default=function(){return Object(r.jsx)("div",{className:"centered",children:Object(r.jsx)("p",{children:"Page not found"})})}}}]);
-//# sourceMappingURL=7.cb027ccd.chunk.js.map

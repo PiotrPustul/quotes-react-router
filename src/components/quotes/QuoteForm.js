@@ -26,6 +26,7 @@ const QuoteForm = (props) => {
   } = useInput(value => value.length >= 5);
 
   const formIsValid = enteredAuthorIsValid && enteredTextIsValid;
+
   const submitFormHandler = (event) => {
     event.preventDefault();
 
