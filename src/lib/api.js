@@ -1,4 +1,3 @@
-// const FIREBASE_DOMAIN = 'https://quotes-app-6b158-default-rtdb.europe-west1.firebasedatabase.app';
 const FIREBASE_DOMAIN = 'https://quotes-react-router-default-rtdb.europe-west1.firebasedatabase.app';
 
 export const getAllQuotes = async () => {
