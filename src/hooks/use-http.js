@@ -21,8 +21,7 @@ function useHttp(requestFunction, startWithPending = false) {
         errorMessage: error.message || 'Something went wrong!',
       });
     }
-  }, [requestFunction]
-  );
+  }, [requestFunction]);
 
   return {
     sendRequest,

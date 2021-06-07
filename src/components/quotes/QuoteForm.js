@@ -1,47 +1,39 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Prompt } from 'react-router-dom';
 
+import useInput from '../../hooks/use-input';
 import Card from '../UI/Card';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import classes from './QuoteForm.module.css';
 
 const QuoteForm = (props) => {
   const [isEntering, setIsEntering] = useState(false);
-  const [authorInputValid, setAuthorInputValid] = useState();
-  const [textInputValid, setTextInputValid] = useState();
-  const [authorError, setAuthorError] = useState('');
-  const [textError, setTextError] = useState('');
 
-  const authorInputRef = useRef();
-  const textInputRef = useRef();
+  const {
+    value: enteredAuthor,
+    isValid: enteredAuthorIsValid,
+    hasError: authorInputHasError,
+    valueChangeHandler: authorChangeHandler,
+    inputBlurHandler: authorBlurHandler,
+  } = useInput(value => value.trim() !== '');
 
+  const {
+    value: enteredText,
+    isValid: enteredTextIsValid,
+    hasError: textInputHasError,
+    valueChangeHandler: textChangeHandler,
+    inputBlurHandler: textBlurHandler,
+  } = useInput(value => value.length >= 5);
+
+  const formIsValid = enteredAuthorIsValid && enteredTextIsValid;
   const submitFormHandler = (event) => {
     event.preventDefault();
 
-    const enteredAuthor = authorInputRef.current.value;
-    const enteredText = textInputRef.current.value;
-
-    if (enteredAuthor.length === 0) {
-      setAuthorError('Please add your name.');
-      setAuthorInputValid(false);
-    } else {
-      setAuthorError('');
-      setAuthorInputValid(true);
-    }
-
-    if (enteredText.length < 5) {
-      setTextError('Please type your quote min 5 charts');
-      setTextInputValid(false);
-    } else {
-      setTextError('');
-      setTextInputValid(true);
-    }
-
-    if (!authorInputValid && !textInputValid) {
+    if (!formIsValid) {
       return;
     }
 
-    props.onAddQuote({ author: enteredAuthor, text: enteredText });
+    return props.onAddQuote({ author: enteredAuthor, text: enteredText });
   };
 
   const FinishEnteringHandler = () => {
@@ -52,8 +44,8 @@ const QuoteForm = (props) => {
     setIsEntering(true);
   };
 
-  const inputAuthorClass = authorError !== '' ? `${classes['input-error']}` : '';
-  const inputTextClass = textError && `${classes['input-error']}`;
+  const authorInputClass = authorInputHasError ? classes.invalid : classes.control;
+  const textInputClass = textInputHasError ? classes.invalid : classes.control;
 
   return (
     <>
@@ -68,16 +60,25 @@ const QuoteForm = (props) => {
               <LoadingSpinner />
             </div>
           )}
-
-          <div className={classes.control}>
+          <div className={authorInputClass}>
             <label htmlFor='author'>Author</label>
-            <input className={inputAuthorClass} type='text' id='author' ref={authorInputRef} />
-            {authorError && <p className='error-message'>{authorError}</p>}
+            <input
+              type='text'
+              id='author'
+              onChange={authorChangeHandler}
+              onBlur={authorBlurHandler}
+            />
+            {authorInputHasError && <p className='error-message'>Name must not be empty.</p>}
           </div>
-          <div className={classes.control}>
+          <div className={textInputClass}>
             <label htmlFor='text'>Text</label>
-            <textarea className={inputTextClass} id='text' rows='5' ref={textInputRef}></textarea>
-            {textError && <p className='error-message'>{textError}</p>}
+            <textarea
+              id='text'
+              rows='5'
+              onChange={textChangeHandler}
+              onBlur={textBlurHandler}
+            ></textarea>
+            {textInputHasError && <p className='error-message'>Please type min 5 charts.</p>}
           </div>
           <div className={classes.actions}>
             <button className='btn' onClick={FinishEnteringHandler}>Add Quote</button>

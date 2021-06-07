@@ -40,9 +40,16 @@
   outline-color: teal;
 }
 
-.control .input-error {
+.invalid input,
+.invalid textarea {
+  font: inherit;
+  padding: 0.35rem;
+  border-radius: 4px;
   background-color: #f5b0b0;
   border: 1px solid rgb(255, 0, 0);
+  display: block;
+  width: 100%;
+  font-size: 1.25rem;
 }
 
 .actions {
