@@ -1,7 +1,7 @@
-const FIREBASE_DOMAIN = 'https://quotes-react-router-default-rtdb.europe-west1.firebasedatabase.app';
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 export const getAllQuotes = async () => {
-  const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`);
+  const response = await fetch(`${API_KEY}/quotes.json`);
   const data = await response.json();
 
   if (!response.ok) {
@@ -23,7 +23,7 @@ export const getAllQuotes = async () => {
 };
 
 export const getSingleQuote = async (quoteId) => {
-  const response = await fetch(`${FIREBASE_DOMAIN}/quotes/${quoteId}.json`);
+  const response = await fetch(`${API_KEY}/quotes/${quoteId}.json`);
   const data = await response.json();
 
   if (!response.ok) {
@@ -39,7 +39,7 @@ export const getSingleQuote = async (quoteId) => {
 };
 
 export const addQuote = async (quoteData) => {
-  const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`, {
+  const response = await fetch(`${API_KEY}/quotes.json`, {
     method: 'POST',
     body: JSON.stringify(quoteData),
     headers: {
@@ -56,7 +56,7 @@ export const addQuote = async (quoteData) => {
 }
 
 export const addComment = async (requestData) => {
-  const response = await fetch(`${FIREBASE_DOMAIN}/comments/${requestData.quoteId}.json`, {
+  const response = await fetch(`${API_KEY}/comments/${requestData.quoteId}.json`, {
     method: 'POST',
     body: JSON.stringify(requestData.commentData),
     headers: {
@@ -73,7 +73,7 @@ export const addComment = async (requestData) => {
 }
 
 export const getAllComments = async (quoteId) => {
-  const response = await fetch(`${FIREBASE_DOMAIN}/comments/${quoteId}.json`);
+  const response = await fetch(`${API_KEY}/comments/${quoteId}.json`);
 
   const data = await response.json();
 
